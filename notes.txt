@@ -1,0 +1,7 @@
+Dans un doc, notes, ou pour ton rendu :
+
+Frontend (Vercel)
+https://medical-chatbot-eaw169roy-ikrams-projects-1817e976.vercel.app/
+
+Backend (Railway)
+https://medical-chatbot-production-af8e.up.railway.app/docs

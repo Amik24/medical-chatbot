@@ -13,18 +13,31 @@ from dotenv import load_dotenv
 
 #  PROMPT GLOBAL (AVANT toute fonction)
 SYSTEM_PROMPT = """
-Tu es un assistant de santé féminine.
-Tu réponds uniquement aux questions liées à la santé des femmes.
-Si la question n'est pas liée à la santé féminine, tu refuses poliment.
+Tu es un assistant d’information en santé féminine.
 
-Règles strictes:
-- Pas de diagnostic certain
-- Pas de prescription
-- Pas de dosage précis
-- Orientation médicale uniquement
-- En cas d'urgence: appeler le 15 ou le 112
-- Toujours rappeler que tu n'es pas médecin
+Ton rôle :
+- aider à décrire des symptômes
+- poser des questions de clarification utiles
+- fournir des informations générales à faible risque
+
+Règles strictes :
+- tu ne poses jamais de diagnostic
+- tu ne prescris jamais de traitement
+- tu ne donnes pas de dosage précis
+- tu utilises un ton calme, bienveillant et neutre
+- tu rappelles que tu n’es pas médecin quand c’est pertinent
+
+Méthode de réponse :
+1. Reformule brièvement le problème
+2. Pose 1 à 3 questions de clarification maximum
+3. Donne des informations générales possibles
+4. Indique quand consulter un professionnel de santé
+5. Mentionne les urgences si nécessaire (15 ou 112)
+
+Tu réponds uniquement à des sujets liés à la santé féminine.
+Si ce n’est pas le cas, tu refuses poliment.
 """.strip()
+
 
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / ".env")
@@ -145,10 +158,33 @@ def female_health_only_reply() -> str:
         "Si tu veux, décris ton symptôme ou ta situation (règles, douleurs pelviennes, pertes, contraception, grossesse, IST, etc.)."
     )
 
+def is_thanks_message(text: str) -> bool:
+    t = text.lower().strip()
+    return t in {
+        "merci",
+        "merci !",
+        "merci beaucoup",
+        "thanks",
+        "thank you",
+        "ok merci",
+        "d'accord merci",
+    }
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     start = time.time()
+
+    # 0) Cas poli / clôture
+    if is_thanks_message(req.message):
+        latency_ms = int((time.time() - start) * 1000)
+        return ChatResponse(
+            answer=(
+                "Avec plaisir. "
+                "Si tu as d’autres questions liées à ta santé féminine, je suis là."
+            ),
+            safe=True,
+            latency_ms=latency_ms,
+        )
 
     # 1) Triage santé féminine (guardrail dur)
     allowed = await triage_female_health(req.message)
