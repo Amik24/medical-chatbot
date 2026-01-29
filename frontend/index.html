@@ -224,7 +224,7 @@
       color: rgba(255,255,255,.75);
       font-size: 14px;
       line-height: 1.6;
-      max-width: 56ch;
+      max-width: 60ch;
     }
 
     .gridInfo{
@@ -442,7 +442,7 @@
           <div class="mark" aria-hidden="true"></div>
           <div>
             <h1>Medical Chatbot</h1>
-            <p>Information santé, sans diagnostic</p>
+            <p>Information en santé féminine, sans diagnostic</p>
           </div>
         </div>
 
@@ -464,21 +464,22 @@
     <div class="wrap">
       <section class="hero">
         <div class="heroCard" id="securite">
-          <span class="kicker">Assistant santé</span>
+          <span class="kicker">Assistant santé féminine</span>
           <h2 class="title">Un chat clair, sécurisé, et utile pour orienter.</h2>
           <p class="subtitle">
-            Décris tes symptômes et reçois des conseils à faible risque, des questions de clarification,
-            et des signaux d’alerte. En cas de doute ou d’urgence, les services d’urgence restent la référence.
+            Cet assistant fournit une information générale en santé féminine. Il pose des questions de clarification et
+            propose des conseils à faible risque. Il ne remplace pas un professionnel de santé et ne pose pas de diagnostic.
+            En cas de doute ou d’urgence, les services d’urgence restent la référence.
           </p>
 
           <div class="gridInfo">
             <div class="mini">
-              <h3>Garde fous</h3>
-              <p>Pas de diagnostic certain, pas de prescription, pas de dosage précis. Orientation et conseils prudents.</p>
+              <h3>Périmètre</h3>
+              <p>Règles, cycle, douleurs pelviennes, pertes, infections urinaires ou vaginales, contraception, grossesse, post-partum.</p>
             </div>
             <div class="mini">
               <h3>Urgence</h3>
-              <p>Douleur thoracique, détresse respiratoire, confusion, faiblesse d’un côté: appelle le 15 ou le 112.</p>
+              <p>Douleur intense, saignement abondant, malaise, fièvre élevée persistante, détresse respiratoire: appelle le 15 ou le 112.</p>
             </div>
           </div>
         </div>
@@ -488,7 +489,7 @@
             <div class="chatTopLeft">
               <span class="statusDot" aria-hidden="true"></span>
               <div class="chatTopTitle">
-                <strong>Assistant médical</strong>
+                <strong>Assistant santé féminine</strong>
                 <span id="statusText">En ligne</span>
               </div>
             </div>
@@ -503,13 +504,15 @@
 
           <div class="chatBottom" id="aide">
             <div class="inputWrap">
-              <textarea id="message" placeholder="Décris tes symptômes, depuis quand, et ce qui t’inquiète..." rows="2"></textarea>
+              <textarea id="message" placeholder="Décris un symptôme lié à la santé féminine (règles, douleurs pelviennes, pertes, contraception, grossesse) et depuis quand..." rows="2"></textarea>
               <button class="btn btn-primary" id="send" type="button">Envoyer</button>
             </div>
 
             <div class="hint">
               <div>
-                <strong>Information santé uniquement.</strong> En cas d’urgence, appelle le 15 ou le 112.
+                <strong>Information générale en santé féminine uniquement.</strong>
+                Pas de diagnostic médical. En cas d’urgence, appelle le 15 ou le 112.
+                Ne mets pas de nom, adresse, ou informations personnelles.
               </div>
               <div id="latency"></div>
             </div>
@@ -597,6 +600,11 @@
       }
     }
 
+    function isThanksMessage(text){
+      const t = (text || "").trim().toLowerCase();
+      return ["merci", "merci !", "merci beaucoup", "thanks", "thank you", "ok merci", "d'accord merci"].includes(t);
+    }
+
     async function send(){
       const message = inputEl.value.trim();
       if(!message) return;
@@ -604,6 +612,16 @@
       addBubble("me", message, nowTime());
       inputEl.value = "";
       setBusy(true);
+
+      // UX: réponse instantanée pour "merci"
+      if(isThanksMessage(message)){
+        removeTyping();
+        addBubble("bot", "Avec plaisir. Si tu as d’autres questions liées à ta santé féminine, je suis là.", "Répondu à " + nowTime());
+        setBusy(false);
+        inputEl.focus();
+        return;
+      }
+
       addTyping();
 
       try{
@@ -626,7 +644,11 @@
         }
       }catch(e){
         removeTyping();
-        addBubble("bot", "Erreur: " + e.message, "Vérifie le backend Railway");
+        addBubble(
+          "bot",
+          "Le service est temporairement indisponible. Réessaie dans quelques instants.",
+          "Si le problème persiste, vérifie le backend Railway"
+        );
       }finally{
         setBusy(false);
         inputEl.focus();
@@ -638,7 +660,7 @@
       latencyEl.textContent = "";
       addBubble(
         "bot",
-        "Bonjour. Décris tes symptômes, depuis quand, et ce qui t’inquiète. Je peux poser quelques questions et te donner des conseils prudents.",
+        "Bonjour. Je suis un assistant d’information en santé féminine.\n\nJe peux t’aider à décrire tes symptômes, poser des questions de clarification et donner des informations générales. Je ne remplace pas un professionnel de santé et je ne pose pas de diagnostic.\n\nEn cas de doute ou d’urgence, appelle le 15 ou le 112.\n\nExemples de questions:\n- Retard de règles\n- Douleurs pelviennes\n- Pertes inhabituelles\n\nDécris ce que tu ressens, depuis quand, et ce qui t’inquiète.",
         "Prêt"
       );
       inputEl.focus();
@@ -651,7 +673,7 @@
     inputEl.addEventListener("keydown", (e) => {
       if(e.key === "Enter" && !e.shiftKey){
         e.preventDefault();
-        send();
+        if(!sendBtn.disabled) send();
       }
     });
 
