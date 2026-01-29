@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Medical Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 12px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
+    .row { display: flex; gap: 12px; margin-top: 12px; }
+    input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ccc; }
+    button { padding: 12px 16px; border-radius: 10px; border: 0; cursor: pointer; }
+    .msg { margin: 10px 0; }
+    .me { font-weight: 600; }
+    .bot { background: #f6f6f6; padding: 12px; border-radius: 10px; white-space: pre-wrap; }
+    .small { color: #666; font-size: 13px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Medical Chatbot</h1>
+  <div class="card">
+    <div id="chat"></div>
+
+    <div class="row">
+      <input id="message" placeholder="Décris tes symptômes..." />
+      <button id="send">Envoyer</button>
+    </div>
+
+    <div class="small">
+      Information santé uniquement. En cas d’urgence, appelle le 15 ou le 112.
+    </div>
+  </div>
+
+  <script>
+    const BACKEND_URL = "https://medical-chatbot-production-af8e.up.railway.app";
+    const chatEl = document.getElementById("chat");
+    const inputEl = document.getElementById("message");
+    const sendBtn = document.getElementById("send");
+
+    function addMessage(author, text, cls) {
+      const wrap = document.createElement("div");
+      wrap.className = "msg";
+      wrap.innerHTML = cls === "bot"
+        ? `<div class="me">${author}</div><div class="bot">${text}</div>`
+        : `<div class="me">${author}</div><div>${text}</div>`;
+      chatEl.appendChild(wrap);
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    async function send() {
+      const message = inputEl.value.trim();
+      if (!message) return;
+
+      addMessage("Moi", message, "me");
+      inputEl.value = "";
+      sendBtn.disabled = true;
+      sendBtn.textContent = "...";
+
+      try {
+        const res = await fetch(`${BACKEND_URL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.detail?.info || "Erreur API");
+
+        addMessage("Bot", data.answer, "bot");
+      } catch (e) {
+        addMessage("Bot", `Erreur: ${e.message}`, "bot");
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = "Envoyer";
+      }
+    }
+
+    sendBtn.addEventListener("click", send);
+    inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+  </script>
+</body>
+</html>
