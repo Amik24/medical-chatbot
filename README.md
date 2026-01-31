@@ -75,6 +75,5 @@ Conformément aux enjeux de santé, ORIA respecte la vie privée :
 
 Projet réalisé avec passion par **Ikram** et **Evan**.
 
-*Ce projet est actuellement en phase de prototype (MVP) dans le cadre d'un sprint de développement de 4 jours.*
 
 > **Avertissement Légal :** ORIA fournit des informations à but pédagogique uniquement. En cas de doute, consultez toujours un professionnel de santé ou contactez les services d'urgence.
