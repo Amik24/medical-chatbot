@@ -13,29 +13,60 @@ from dotenv import load_dotenv
 
 #  PROMPT GLOBAL (AVANT toute fonction)
 SYSTEM_PROMPT = """
-Tu es un assistant d’information en santé féminine.
+Tu es un assistant virtuel expert en information sur la santé féminine, conçu pour accompagner les utilisatrices en France, en Suisse et en Allemagne.
 
-Ton rôle :
-- aider à décrire des symptômes
-- poser des questions de clarification utiles
-- fournir des informations générales à faible risque
+MISSION :
+Ton rôle est d'aider à décrire les symptômes, de fournir des informations éducatives basées sur des sources fiables et d'orienter vers le parcours de soin approprié. Tu ne remplaces JAMAIS une consultation médicale.
 
-Règles strictes :
-- tu ne poses jamais de diagnostic
-- tu ne prescris jamais de traitement
-- tu ne donnes pas de dosage précis
-- tu utilises un ton calme, bienveillant et neutre
-- tu rappelles que tu n’es pas médecin quand c’est pertinent
+NON NÉGOCIABLES :
+1. AUCUN DIAGNOSTIC : N'affirme jamais une pathologie. Utilise le conditionnel ("cela pourrait être", "il est possible que").
+2. AUCUNE PRESCRIPTION : Ne suggère jamais de médicaments (même sans ordonnance) ni de dosages.
+3. TONALITÉ : Reste calme, bienveillant, neutre et non alarmiste. Ne juge jamais l'utilisatrice.
+4. SOURCES DE RÉFÉRENCE : Tes réponses doivent refléter les standards de la HAS (France), de la SSGO/SGGG (Suisse) et de la BZgA/RKI (Allemagne).
 
-Méthode de réponse :
-1. Reformule brièvement le problème
-2. Pose 1 à 3 questions de clarification maximum
-3. Donne des informations générales possibles
-4. Indique quand consulter un professionnel de santé
-5. Mentionne les urgences si nécessaire (15 ou 112)
+DÉTECTION D'URGENCE (RED FLAGS) :
+Si l'utilisatrice mentionne l'un des signes suivants, place la section "URGENCES" en tout début de réponse :
+- Douleur abdominale ou pelvienne brutale et insupportable.
+- Saignements hémorragiques (besoin de changer de protection toutes les heures).
+- Forte fièvre associée à des douleurs pelviennes.
+- Évanouissement, malaise ou détresse respiratoire.
 
-Tu réponds uniquement à des sujets liés à la santé féminine.
-Si ce n’est pas le cas, tu refuses poliment.
+STRUCTURE DE RÉPONSE OBLIGATOIRE :
+Toutes tes réponses doivent suivre cet ordre :
+
+1. ANALYSE / REFORMULATION
+- Reformule brièvement pour montrer que tu as compris.
+- Si la demande est trop vague, indique-le.
+
+2. QUESTIONS DE CLARIFICATION (1 à 3 maximum)
+- Pose des questions simples pour aider l'utilisatrice à préciser son ressenti (ex: localisation de la douleur, lien avec le cycle).
+
+3. INFORMATIONS GÉNÉRALES
+- Explique les mécanismes physiologiques de manière pédagogique.
+- Reste dans la nuance : "Dans ce type de situation, les professionnels de santé observent souvent que..."
+
+4. ORIENTATION / RECOMMANDATION
+- Oriente vers un gynécologue, une sage-femme, ou un centre de santé sexuelle (Planning Familial / Frauenberatungsstellen).
+- Précise les signes qui doivent pousser à consulter rapidement.
+
+5. URGENCES
+Rappelle les numéros selon la zone géographique :
+- France : 15
+- Suisse : 144 (Urgences) et 145 (Tox Info)
+- Allemagne & Europe : 112
+
+PÉRIMÈTRE STRICT :
+- Santé féminine uniquement : règles, cycle, douleurs pelviennes, contraception, grossesse, post-partum, pertes vaginales, infections urinaires, IST, endométriose, SOPK, fertilité, ménopause, seins.
+- Si hors sujet : décline poliment en expliquant ta spécialité.
+- Messages sociaux (merci, bonjour) : réponds brièvement et avec courtoisie.
+
+CONTEXTE LINGUISTIQUE :
+- Réponds dans la langue utilisée par l'utilisatrice (Français, Allemand, Anglais).
+- Si l'utilisatrice écrit en suisse-allemand (Schwyzerdütsch), réponds en allemand standard (Hochdeutsch).
+- Adapte le vocabulaire local (ex: Gynéco en France, Frauenarzt en Allemagne/Suisse).
+
+CLAUSE DE NON-RESPONSABILITÉ FINALE (À CHAQUE RÉPONSE) :
+"Je ne suis pas un médecin et ces informations ne remplacent pas une consultation médicale."
 """.strip()
 
 
@@ -62,16 +93,21 @@ class ChatResponse(BaseModel):
     latency_ms: int
 
 TRIAGE_PROMPT = """
-Tu es un classificateur. Tu dois répondre uniquement par un JSON sur une seule ligne.
-Objectif: dire si le message utilisateur est une question liée à la santé féminine.
+Tu es un classificateur expert. Tu dois répondre uniquement par un JSON sur une seule ligne.
+Objectif : Déterminer si le message utilisateur entre dans le périmètre de l'assistant santé féminine.
 
-Santé féminine inclut: règles/menstruations, douleurs pelviennes, cycle, ovulation, SPM, contraception, grossesse, post-partum, IST, vagin/vulve, pertes, mycoses, infections urinaires, endométriose, SOPK, fertilité, libido, ménopause, seins.
+Périmètre "allowed": true :
+1. SANTÉ FÉMININE : Règles, cycle, douleurs pelviennes, ovulation, SPM, grossesse, post-partum, IST, santé vaginale/vulvaire, pertes, mycoses, infections urinaires, endométriose, SOPK, fertilité, libido, ménopause, seins.
+2. CONTRACEPTION & URGENCES : Oublis de pilule, erreurs de prise, surdosages, contraception d'urgence.
+3. GESTION DES SYMPTÔMES : Questions sur les médicaments (ex: Ibuprofène, Doliprane, crèmes) UNIQUEMENT si le contexte est lié aux règles ou aux pathologies citées plus haut.
+4. POLITESSE & SOCIAL : Salutations (bonjour, hello), remerciements (merci), ou questions sur l'identité de l'assistant.
 
-Réponds EXACTEMENT au format:
+Périmètre "allowed": false :
+- Hors sujet total (technique, cuisine, devoirs, météo, blagues).
+- Santé générale sans lien explicite avec la santé féminine (ex: "j'ai mal au genou", "rhume", "grippe", "dosage doliprane pour la fièvre").
+
+Réponds EXACTEMENT au format :
 {"allowed": true/false}
-
-allowed=true uniquement si c’est une demande de santé féminine ou une demande de santé générale clairement liée à une femme (symptômes gynéco/urinaires/sexuels/reproductifs).
-allowed=false si c’est hors sujet (tech, cuisine, devoirs, blagues) ou santé non féminine (sport, rhume sans contexte, etc).
 """.strip()
 
 @app.get("/health")
@@ -157,6 +193,14 @@ def female_health_only_reply() -> str:
         "Je ne peux pas répondre aux questions hors santé féminine. "
         "Si tu veux, décris ton symptôme ou ta situation (règles, douleurs pelviennes, pertes, contraception, grossesse, IST, etc.)."
     )
+def is_social_message(text: str) -> bool:
+    """Détecte les messages de politesse (merci, bonjour) pour éviter un appel LLM inutile."""
+    t = text.lower().strip().replace("!", "").replace(".", "")
+    social_phrases = {
+        "merci", "merci beaucoup", "thanks", "thank you", "ok merci", 
+        "d'accord merci", "bonjour", "hello", "salut", "hi", "ca va", "ça va"
+    }
+    return t in social_phrases
 
 def is_thanks_message(text: str) -> bool:
     t = text.lower().strip()
@@ -173,42 +217,54 @@ def is_thanks_message(text: str) -> bool:
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     start = time.time()
+    
+    # Helper pour calculer la latence à n'importe quel moment
+    get_latency = lambda: int((time.time() - start) * 1000)
 
-    # 0) Cas poli / clôture
+    # 0) Cas "Short-circuit" : Politesse et Clôture (Gratuit et Rapide)
+    # On laisse passer les "merci" et "bonjour" sans solliciter le triage IA
+    if is_social_message(req.message):
+        return ChatResponse(
+            answer="Bonjour ! Comment puis-je vous aider aujourd'hui concernant votre santé féminine ?",
+            safe=True,
+            latency_ms=get_latency()
+        )
+    
     if is_thanks_message(req.message):
-        latency_ms = int((time.time() - start) * 1000)
         return ChatResponse(
-            answer=(
-                "Avec plaisir. "
-                "Si tu as d’autres questions liées à ta santé féminine, je suis là."
-            ),
+            answer="Avec plaisir. Si vous avez d’autres questions liées à votre santé (cycle, contraception, symptômes), je reste à votre écoute.",
             safe=True,
-            latency_ms=latency_ms,
+            latency_ms=get_latency()
         )
 
-    # 1) Triage santé féminine (guardrail dur)
-    allowed = await triage_female_health(req.message)
-    if not allowed:
-        latency_ms = int((time.time() - start) * 1000)
-        return ChatResponse(
-            answer=female_health_only_reply(),
-            safe=True,
-            latency_ms=latency_ms,
-        )
-
-    # 2) Appel LLM (dans un try/except ciblé)
     try:
+        # 1) Triage santé féminine (Guardrail IA)
+        # On entoure le triage d'un try/except au cas où l'appel au classificateur échoue
+        allowed = await triage_female_health(req.message)
+        
+        if not allowed:
+            return ChatResponse(
+                answer=female_health_only_reply(),
+                safe=True,
+                latency_ms=get_latency()
+            )
+
+        # 2) Appel au LLM principal (Mistral avec le nouveau System Prompt)
         answer = await call_mistral(req.message)
+        
+        return ChatResponse(
+            answer=answer, 
+            safe=True, 
+            latency_ms=get_latency()
+        )
+
     except Exception as e:
-        latency_ms = int((time.time() - start) * 1000)
+        # En cas d'erreur de triage ou de génération LLM
         raise HTTPException(
             status_code=503,
             detail={
-                "error": "LLM unavailable or timeout",
-                "latency_ms": latency_ms,
+                "error": "Service temporairement indisponible",
+                "latency_ms": get_latency(),
                 "info": str(e)[:200],
             },
         )
-
-    latency_ms = int((time.time() - start) * 1000)
-    return ChatResponse(answer=answer, safe=True, latency_ms=latency_ms)

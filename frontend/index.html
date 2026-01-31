@@ -3,27 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Medical Chatbot</title>
+  <title>ORIA – Assistant en santé féminine</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg: #07060a;
-      --panel: rgba(255,255,255,.06);
-      --panel-2: rgba(255,255,255,.08);
+      --bg2:#0b0712;
+
+      --glass: rgba(255,255,255,.055);
+      --glass2: rgba(255,255,255,.08);
       --stroke: rgba(255,255,255,.12);
+
       --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.56);
 
       --pink: #ff2d86;
-      --pink-2: #ff4aa0;
-      --pink-soft: rgba(255,45,134,.16);
+      --pink2: #b36bff;
+      --mint: #20e3a6;
 
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --radius: 18px;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
+      --r: 18px;
+      --r2: 24px;
     }
 
     *{ box-sizing: border-box; }
@@ -31,82 +38,123 @@
     body{
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(1000px 700px at 70% -10%, rgba(255,45,134,.32), transparent 60%),
-        radial-gradient(800px 500px at 10% 10%, rgba(255,45,134,.16), transparent 60%),
-        radial-gradient(900px 600px at 90% 70%, rgba(255,45,134,.10), transparent 65%),
-        var(--bg);
       color: var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* Animated mesh background */
+    .mesh{
+      position: fixed;
+      inset: -20vh -10vw;
+      z-index: -1;
+      background:
+        radial-gradient(600px 480px at 18% 18%, rgba(255,45,134,.22), transparent 60%),
+        radial-gradient(620px 520px at 80% 22%, rgba(179,107,255,.18), transparent 62%),
+        radial-gradient(720px 520px at 70% 78%, rgba(255,45,134,.12), transparent 60%),
+        radial-gradient(680px 520px at 28% 80%, rgba(179,107,255,.10), transparent 58%),
+        radial-gradient(1200px 900px at 50% 50%, rgba(255,255,255,.03), transparent 65%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      filter: blur(0px) saturate(1.05);
+      animation: floaty 14s ease-in-out infinite alternate;
+    }
+    @keyframes floaty{
+      0%{ transform: translate3d(0,0,0) scale(1); }
+      100%{ transform: translate3d(-18px, 12px, 0) scale(1.02); }
     }
 
     a{ color: inherit; text-decoration: none; }
 
     .wrap{
-      width: min(1180px, calc(100% - 32px));
+      width: min(1180px, calc(100% - 28px));
       margin: 0 auto;
     }
 
+    /* Header */
     header{
       position: sticky;
-      top: 0;
-      z-index: 20;
+      top:0;
+      z-index: 30;
       backdrop-filter: blur(14px);
-      background: linear-gradient(to bottom, rgba(7,6,10,.75), rgba(7,6,10,.35));
+      background: linear-gradient(to bottom, rgba(7,6,10,.78), rgba(7,6,10,.40));
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
-
     .nav{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding: 14px 0;
       gap: 14px;
+      padding: 14px 0;
     }
 
     .brand{
       display:flex;
       align-items:center;
       gap: 12px;
-      min-width: 240px;
+      min-width: 220px;
     }
 
-    .mark{
-      width: 42px;
-      height: 42px;
+    /* ORIA core (abstract avatar) */
+    .core{
+      width: 44px;
+      height: 44px;
       border-radius: 999px;
+      position: relative;
       background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,0) 60%),
-        radial-gradient(40px 40px at 50% 55%, rgba(255,45,134,.95), rgba(255,45,134,.18) 55%, rgba(255,45,134,0) 70%),
-        rgba(255,255,255,.06);
+        radial-gradient(14px 14px at 30% 28%, rgba(255,255,255,.92), rgba(255,255,255,0) 62%),
+        radial-gradient(40px 40px at 55% 55%, rgba(255,45,134,.95), rgba(179,107,255,.22) 56%, rgba(255,45,134,0) 74%),
+        rgba(255,255,255,.05);
       border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 16px 40px rgba(255,45,134,.12);
+      box-shadow: 0 16px 44px rgba(255,45,134,.14);
+      overflow:hidden;
+    }
+    .core:after{
+      content:"";
+      position:absolute;
+      inset:-18px;
+      background:
+        radial-gradient(120px 60px at 30% 30%, rgba(255,45,134,.20), transparent 60%),
+        radial-gradient(120px 60px at 70% 70%, rgba(179,107,255,.14), transparent 60%);
+      filter: blur(4px);
+      opacity:.9;
+      animation: corePulse 4.4s ease-in-out infinite;
+    }
+    @keyframes corePulse{
+      0%,100%{ transform: scale(1); opacity:.75; }
+      50%{ transform: scale(1.08); opacity:1; }
     }
 
-    .brand h1{
-      font-size: 14px;
-      line-height: 1.2;
-      margin:0;
-      font-weight: 800;
-      letter-spacing: .2px;
+    .brandTitle{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
     }
-    .brand p{
+    .brandTitle h1{
+      margin:0;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      line-height:1.1;
+    }
+    .brandTitle p{
       margin:0;
       font-size: 12px;
-      color: var(--muted);
+      color: var(--muted2);
+      line-height:1.2;
     }
 
     .navlinks{
       display:flex;
       align-items:center;
-      gap: 18px;
-      flex: 1;
+      gap: 10px;
       justify-content:center;
+      flex: 1;
     }
     .navlinks a{
       font-size: 13px;
-      color: rgba(255,255,255,.78);
-      padding: 10px 10px;
-      border-radius: 12px;
+      color: rgba(255,255,255,.76);
+      padding: 10px 12px;
+      border-radius: 999px;
     }
     .navlinks a:hover{
       background: rgba(255,255,255,.06);
@@ -117,8 +165,8 @@
       display:flex;
       align-items:center;
       gap: 10px;
-      min-width: 240px;
       justify-content:flex-end;
+      min-width: 220px;
     }
 
     .pill{
@@ -129,8 +177,9 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.88);
+      color: rgba(255,255,255,.85);
       font-size: 13px;
+      backdrop-filter: blur(14px);
     }
 
     .btn{
@@ -143,7 +192,7 @@
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.06);
       color: rgba(255,255,255,.92);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 13px;
       cursor: pointer;
       transition: transform .06s ease, background .2s ease, border-color .2s ease;
@@ -161,43 +210,61 @@
       box-shadow: 0 18px 40px rgba(255,45,134,.18);
     }
     .btn-primary:hover{
-      background: linear-gradient(135deg, var(--pink-2), #ff2d86);
+      background: linear-gradient(135deg, #ff4aa0, #ff2d86);
     }
 
-    main{ padding: 28px 0 50px; }
+    main{ padding: 22px 0 54px; }
 
-    .hero{
+    /* Bento grid */
+    .bento{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-      align-items: stretch;
-      margin-top: 10px;
+      grid-template-columns: 1.55fr .9fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 14px;
     }
 
-    .heroCard{
+    .card{
       border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      background: rgba(255,255,255,.05);
+      border-radius: var(--r2);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(16px);
+      overflow:hidden;
       position: relative;
     }
 
-    .heroCard:before{
+    .cardGlow:before{
       content:"";
       position:absolute;
-      inset:-60px -60px auto auto;
-      width: 240px;
-      height: 240px;
+      inset:-80px -80px auto auto;
+      width: 260px;
+      height: 260px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,45,134,.45), rgba(255,45,134,0) 70%);
+      background: radial-gradient(circle at 30% 30%, rgba(255,45,134,.38), rgba(255,45,134,0) 70%);
       filter: blur(2px);
-      opacity: .9;
-      pointer-events: none;
+      opacity: .85;
+      pointer-events:none;
     }
 
-    .kicker{
+    .cardPad{ padding: 18px; }
+
+    .heroTitle{
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+      font-weight: 950;
+      margin: 12px 0 10px;
+    }
+    .heroSub{
+      margin:0;
+      color: rgba(255,255,255,.74);
+      font-size: 14px;
+      line-height: 1.65;
+      max-width: 64ch;
+    }
+
+    .tag{
       display:inline-flex;
       align-items:center;
       gap: 10px;
@@ -206,62 +273,69 @@
       background: rgba(255,45,134,.12);
       border: 1px solid rgba(255,45,134,.25);
       color: rgba(255,255,255,.92);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 12px;
       letter-spacing: .2px;
     }
 
-    .title{
-      margin: 14px 0 8px;
-      font-size: clamp(26px, 3.2vw, 40px);
-      line-height: 1.05;
-      letter-spacing: -0.6px;
-      font-weight: 900;
-    }
+    /* Right column stack */
+    .stack{ display:flex; flex-direction: column; gap: 16px; }
 
-    .subtitle{
-      margin: 0 0 16px;
-      color: rgba(255,255,255,.75);
-      font-size: 14px;
-      line-height: 1.6;
-      max-width: 60ch;
-    }
-
-    .gridInfo{
+    .miniGrid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
-      margin-top: 14px;
     }
 
-    .mini{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      border-radius: 18px;
-      padding: 14px;
-    }
-    .mini h3{
+    .miniTitle{
       margin:0;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: .1px;
     }
-    .mini p{
+    .miniText{
       margin: 8px 0 0;
       color: rgba(255,255,255,.70);
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .chatShell{
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.08);
+      margin: 14px 0;
+    }
+
+    /* Quick topic chips */
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .chip{
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      color: rgba(255,255,255,.86);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .2s ease, border-color .2s ease, transform .06s ease;
+      backdrop-filter: blur(14px);
+    }
+    .chip:hover{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.14);
+    }
+    .chip:active{ transform: translateY(1px); }
+
+    /* Chat */
+    .chatShell{
+      min-height: 610px;
       display:flex;
       flex-direction: column;
-      min-height: 520px;
     }
 
     .chatTop{
@@ -279,12 +353,27 @@
       gap: 10px;
     }
 
-    .statusDot{
-      width: 10px;
-      height: 10px;
+    .aiPulse{
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
-      background: #20e3a6;
-      box-shadow: 0 0 0 6px rgba(32,227,166,.12);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      position: relative;
+      overflow:hidden;
+    }
+    .aiPulse:before{
+      content:"";
+      position:absolute;
+      inset:-12px;
+      background: radial-gradient(circle, rgba(255,45,134,.55), rgba(179,107,255,.18), transparent 65%);
+      filter: blur(6px);
+      opacity:.85;
+      animation: breathe 4.2s ease-in-out infinite;
+    }
+    @keyframes breathe{
+      0%,100%{ transform: scale(1); opacity:.75; }
+      50%{ transform: scale(1.35); opacity:1; }
     }
 
     .chatTopTitle{
@@ -292,21 +381,47 @@
       flex-direction: column;
       gap: 2px;
     }
-
     .chatTopTitle strong{
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 950;
     }
-
     .chatTopTitle span{
       font-size: 12px;
       color: rgba(255,255,255,.66);
     }
 
+    .tools{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      color: rgba(255,255,255,.85);
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.80);
+    }
+
     .chatBody{
       padding: 14px 14px 0;
-      overflow: auto;
-      flex: 1;
+      overflow:auto;
+      flex:1;
     }
 
     .bubbleRow{
@@ -314,7 +429,6 @@
       margin: 10px 0;
       gap: 10px;
     }
-
     .bubbleRow.me{ justify-content:flex-end; }
     .bubbleRow.bot{ justify-content:flex-start; }
 
@@ -328,11 +442,12 @@
       line-height: 1.55;
       font-size: 13px;
       white-space: pre-wrap;
+      box-shadow: 0 10px 26px rgba(0,0,0,.18);
     }
 
     .bubble.me{
-      background: linear-gradient(135deg, rgba(255,45,134,.26), rgba(255,45,134,.10));
-      border-color: rgba(255,45,134,.28);
+      background: linear-gradient(135deg, rgba(255,45,134,.26), rgba(179,107,255,.12));
+      border-color: rgba(255,45,134,.22);
     }
 
     .meta{
@@ -345,20 +460,20 @@
       padding: 12px 12px 14px;
       border-top: 1px solid rgba(255,255,255,.08);
       background: rgba(7,6,10,.35);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
 
     .inputWrap{
       display:flex;
       gap: 10px;
-      align-items: center;
+      align-items: flex-end;
     }
 
     textarea{
       width: 100%;
-      min-height: 46px;
-      max-height: 120px;
-      resize: none;
+      min-height: 48px;
+      max-height: 150px;
+      resize:none;
       padding: 12px 12px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
@@ -379,38 +494,13 @@
       font-size: 12px;
       line-height: 1.45;
     }
-
     .hint strong{
       color: rgba(255,255,255,.88);
-      font-weight: 800;
+      font-weight: 900;
     }
 
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      font-size: 12px;
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.80);
-    }
-
-    .loadingDots{
-      display:inline-flex;
-      gap: 6px;
-      align-items: center;
-    }
+    /* Typing dots */
+    .loadingDots{ display:inline-flex; gap: 6px; align-items:center; }
     .dot{
       width: 6px;
       height: 6px;
@@ -425,35 +515,38 @@
       40%{ transform: translateY(-5px); }
     }
 
+    /* Mobile */
     @media (max-width: 980px){
-      .hero{ grid-template-columns: 1fr; }
-      .brand, .cta{ min-width: auto; }
       .navlinks{ display:none; }
-      .chatShell{ min-height: 520px; }
+      .brand, .cta{ min-width:auto; }
+      .bento{ grid-template-columns: 1fr; }
+      .chatShell{ min-height: 560px; }
     }
   </style>
 </head>
 
 <body>
+  <div class="mesh" aria-hidden="true"></div>
+
   <header>
     <div class="wrap">
       <div class="nav">
         <div class="brand">
-          <div class="mark" aria-hidden="true"></div>
-          <div>
-            <h1>Medical Chatbot</h1>
-            <p>Information en santé féminine, sans diagnostic</p>
+          <div class="core" aria-hidden="true"></div>
+          <div class="brandTitle">
+            <h1>ORIA</h1>
+            <p>Assistant d’information en santé féminine</p>
           </div>
         </div>
 
         <nav class="navlinks" aria-label="Navigation">
           <a href="#chat">Chat</a>
-          <a href="#securite">Sécurité</a>
+          <a href="#guides">Guides</a>
           <a href="#aide">Aide</a>
         </nav>
 
         <div class="cta">
-          <span class="pill">Backend: Railway</span>
+          <span class="pill" id="localTimePill">Heure locale</span>
           <button class="btn btn-primary" id="btnFocus">Ouvrir le chat</button>
         </div>
       </div>
@@ -462,41 +555,21 @@
 
   <main>
     <div class="wrap">
-      <section class="hero">
-        <div class="heroCard" id="securite">
-          <span class="kicker">Assistant santé féminine</span>
-          <h2 class="title">Un chat clair, sécurisé, et utile pour orienter.</h2>
-          <p class="subtitle">
-            Cet assistant fournit une information générale en santé féminine. Il pose des questions de clarification et
-            propose des conseils à faible risque. Il ne remplace pas un professionnel de santé et ne pose pas de diagnostic.
-            En cas de doute ou d’urgence, les services d’urgence restent la référence.
-          </p>
-
-          <div class="gridInfo">
-            <div class="mini">
-              <h3>Périmètre</h3>
-              <p>Règles, cycle, douleurs pelviennes, pertes, infections urinaires ou vaginales, contraception, grossesse, post-partum.</p>
-            </div>
-            <div class="mini">
-              <h3>Urgence</h3>
-              <p>Douleur intense, saignement abondant, malaise, fièvre élevée persistante, détresse respiratoire: appelle le 15 ou le 112.</p>
-            </div>
-          </div>
-        </div>
-
-        <section class="chatShell" id="chat" aria-label="Chat">
+      <section class="bento">
+        <!-- Left: Chat -->
+        <section class="card chatShell" id="chat" aria-label="Chat ORIA">
           <div class="chatTop">
             <div class="chatTopLeft">
-              <span class="statusDot" aria-hidden="true"></span>
+              <span class="aiPulse" aria-hidden="true"></span>
               <div class="chatTopTitle">
-                <strong>Assistant santé féminine</strong>
-                <span id="statusText">En ligne</span>
+                <strong>ORIA</strong>
+                <span id="statusText">Je t’écoute, prends ton temps.</span>
               </div>
             </div>
 
-            <div style="display:flex; gap:10px; align-items:center;">
+            <div class="tools">
               <button class="btn" id="btnClear" type="button">Effacer</button>
-              <span class="badge"><span class="kbd">Entrée</span> envoyer</span>
+            
             </div>
           </div>
 
@@ -504,25 +577,99 @@
 
           <div class="chatBottom" id="aide">
             <div class="inputWrap">
-              <textarea id="message" placeholder="Décris un symptôme lié à la santé féminine (règles, douleurs pelviennes, pertes, contraception, grossesse) et depuis quand..." rows="2"></textarea>
+              <textarea id="message" placeholder="Décris ton symptôme" rows="2"></textarea>
               <button class="btn btn-primary" id="send" type="button">Envoyer</button>
             </div>
 
             <div class="hint">
               <div>
-                <strong>Information générale en santé féminine uniquement.</strong>
-                Pas de diagnostic médical. En cas d’urgence, appelle le 15 ou le 112.
-                Ne mets pas de nom, adresse, ou informations personnelles.
+                <strong>Santé féminine uniquement.</strong>
+                Pas de diagnostic.
+                Ne mets pas de nom, adresse, ni information personnelle.
               </div>
               <div id="latency"></div>
             </div>
           </div>
         </section>
+
+        <!-- Right: Cards stack -->
+        <aside class="stack" id="guides" aria-label="Guides ORIA">
+          <!-- Safety / Emergency -->
+    <section class="card cardGlow">
+      <div class="cardPad">
+    
+        <h2 class="heroTitle">Comprendre votre corps, simplement.</h2>
+
+        <p class="heroSub">
+          ORIA vous accompagne pour décrypter vos cycles et votre santé hormonale.
+          Posez vos questions, explorez vos symptômes et obtenez une première orientation adaptée à votre situation.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="miniGrid">
+          <div>
+            <h3 class="miniTitle">Nos sujets de discussion</h3>
+            <p class="miniText">
+              Cycles et hormones : règles, douleurs, SPM, contraception.<br>
+              Intimité : infections, inconforts pelviens ou vaginaux.<br>
+              Maternité : grossesse, parcours post partum.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="miniTitle">Périmètre</h3>
+            <p class="miniText">
+              Information générale en santé féminine. ORIA aide à décrire les symptômes
+              et à orienter, mais ne remplace pas un professionnel de santé.
+            </p>
+          </div>
+
+          <div style="grid-column: 1 / -1;">
+            <h3 class="miniTitle">Urgences</h3>
+            <p class="miniText">
+              En cas de symptômes graves (douleurs aiguës, malaise, détresse respiratoire),
+              contactez immédiatement les secours :<br><br>
+              France : 15 ou 112.<br>
+              Suisse : 144 ou 112.<br>
+              Allemagne : 112.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+              <!-- Topics / Quick chips -->
+              <section class="card">
+                <div class="cardPad">
+                  <h3 class="miniTitle">Sujets du moment</h3>
+                  <p class="miniText">Choisis un sujet pour pré-remplir ton message.</p>
+
+                  <div class="chips" id="chips">
+                    <button class="chip" data-text="J’ai un retard de règles, est-ce que c’est normal ?">Retard de règles</button>
+                    <button class="chip" data-text="J’ai des douleurs pelviennes, comment savoir si c’est inquiétant ?">Douleurs pelviennes</button>
+                    <button class="chip" data-text="J’ai des pertes inhabituelles, quelles infos sont utiles à donner ?">Pertes inhabituelles</button>
+                    <button class="chip" data-text="J’ai oublié ma pilule, que dois-je faire selon ma situation ?">Oubli de pilule</button>
+                    <button class="chip" data-text="Je suspecte une infection urinaire, quels signes surveiller ?">Infection urinaire</button>
+                    <button class="chip" data-text="Je pense être enceinte, quels symptômes et quelles étapes ?">Grossesse</button>
+                  </div>
+                </div>
+              </section>
+
+          <!-- Did you know -->
+          <section class="card">
+            <div class="cardPad">
+              <h3 class="miniTitle">Le savais-tu ?</h3>
+              <p class="miniText" id="didYouKnow"></p>
+            </div>
+          </section>
+        </aside>
       </section>
     </div>
   </main>
 
   <script>
+    // Important: keep your backend URL as-is
     const BACKEND_URL = "https://medical-chatbot-production-af8e.up.railway.app";
 
     const chatBody = document.getElementById("chatBody");
@@ -532,9 +679,12 @@
     const btnFocus = document.getElementById("btnFocus");
     const latencyEl = document.getElementById("latency");
     const statusText = document.getElementById("statusText");
+    const localTimePill = document.getElementById("localTimePill");
+
+    
 
     function escapeHtml(s){
-      return s
+      return (s || "")
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
@@ -594,15 +744,18 @@
     function setBusy(busy){
       sendBtn.disabled = busy;
       inputEl.disabled = busy;
-      statusText.textContent = busy ? "Réponse en cours" : "En ligne";
-      if(busy){
-        latencyEl.textContent = "";
-      }
+      statusText.textContent = busy ? "Je réfléchis…" : "Je t’écoute, prends ton temps.";
+      if(busy) latencyEl.textContent = "";
     }
 
     function isThanksMessage(text){
       const t = (text || "").trim().toLowerCase();
-      return ["merci", "merci !", "merci beaucoup", "thanks", "thank you", "ok merci", "d'accord merci"].includes(t);
+      // robust-ish: covers common thanks without being too strict
+      const patterns = [
+        "merci", "merci!", "merci.", "merci beaucoup", "mercii", "thx", "thanks", "thank you", "ok merci", "d'accord merci"
+      ];
+      if(patterns.includes(t)) return true;
+      return /^merci+\s*!*$/i.test(t) || /^thanks\s*!*$/i.test(t) || /^thank you\s*!*$/i.test(t);
     }
 
     async function send(){
@@ -613,9 +766,8 @@
       inputEl.value = "";
       setBusy(true);
 
-      // UX: réponse instantanée pour "merci"
+      // Instant UX for "thanks"
       if(isThanksMessage(message)){
-        removeTyping();
         addBubble("bot", "Avec plaisir. Si tu as d’autres questions liées à ta santé féminine, je suis là.", "Répondu à " + nowTime());
         setBusy(false);
         inputEl.focus();
@@ -660,11 +812,42 @@
       latencyEl.textContent = "";
       addBubble(
         "bot",
-        "Bonjour. Je suis un assistant d’information en santé féminine.\n\nJe peux t’aider à décrire tes symptômes, poser des questions de clarification et donner des informations générales. Je ne remplace pas un professionnel de santé et je ne pose pas de diagnostic.\n\nEn cas de doute ou d’urgence, appelle le 15 ou le 112.\n\nExemples de questions:\n- Retard de règles\n- Douleurs pelviennes\n- Pertes inhabituelles\n\nDécris ce que tu ressens, depuis quand, et ce qui t’inquiète.",
-        "Prêt"
+        "Bonjour, je suis ORIA.\n\nJe peux t’aider à décrire tes symptômes, poser 1 à 3 questions de clarification, puis donner des informations générales à faible risque.\n\nJe ne pose pas de diagnostic et je ne remplace pas un professionnel de santé.\n\nEn cas d’urgence, appelle le 15 ou le 112.\n\nDécris ce que tu ressens, depuis quand, et ce qui t’inquiète.",
+        "Je t’écoute"
       );
       inputEl.focus();
     }
+
+    // Quick chips
+    const chips = document.getElementById("chips");
+    chips.addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip");
+      if(!btn) return;
+      const text = btn.getAttribute("data-text");
+      inputEl.value = text || "";
+      inputEl.focus();
+    });
+
+    // Did you know (rotates per refresh)
+    const facts = [
+      "Un cycle menstruel peut varier : une plage de 21 à 35 jours est souvent considérée comme courante.",
+      "Le stress peut retarder l’ovulation et donc provoquer un retard de règles, même sans grossesse.",
+      "Une douleur pelvienne intense, soudaine ou d’un seul côté, surtout avec saignement ou malaise, nécessite une évaluation rapide.",
+      "Les infections urinaires peuvent se manifester par brûlures, envies fréquentes, ou douleurs ; une fièvre peut signaler une atteinte plus haute.",
+      "Les pertes vaginales changent parfois selon le cycle, mais une odeur forte, des démangeaisons ou une douleur justifient un avis médical.",
+      "Après un oubli de pilule, la conduite à tenir dépend du type de pilule et du moment de l’oubli : préciser le contexte aide beaucoup."
+    ];
+    const didYouKnow = document.getElementById("didYouKnow");
+    didYouKnow.textContent = facts[Math.floor(Math.random() * facts.length)];
+
+    // Local time pill (fun wink)
+    function updateLocalTime(){
+      const d = new Date();
+      const t = d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+      localTimePill.textContent = "Heure locale : " + t;
+    }
+    updateLocalTime();
+    setInterval(updateLocalTime, 30000);
 
     sendBtn.addEventListener("click", send);
     btnClear.addEventListener("click", clearChat);
