@@ -1,79 +1,111 @@
 # 🌸 ORIA : Assistant d’Information en Santé Féminine
 
-**ORIA** est un espace d'écoute et d'orientation conversationnel dédié à la santé des femmes. Conçu pour briser les tabous et offrir une première réponse fiable, cet assistant aide à décrypter les symptômes et oriente vers les structures de soins adaptées, sans jamais se substituer à un médecin.
+**ORIA** est un espace d'écoute et d'orientation conversationnel intelligent dédié à la santé des femmes. Conçu pour briser les tabous et offrir une première réponse fiable, cet assistant aide à décrypter les symptômes et oriente vers les structures de soins adaptées en France, Suisse et Allemagne.
 
 🚀 **Démo Live :** [medical-chatbot-ochre.vercel.app](https://medical-chatbot-ochre.vercel.app)
 
-⚙️ **Backend API :** Déployé sur Railway (FastAPI + Mistral AI)
+⚙️ **Backend API :** FastAPI + Mistral AI (Déployé sur Railway)
 
 ---
 
-## ✨ Objectifs du projet
+##  Objectifs du projet
 
-Le projet répond à un besoin de pré-orientation rapide et sécurisé. ORIA permet aux utilisatrices de :
+Le projet répond à un besoin de pré-orientation rapide, sécurisé et bienveillant.
 
-* **Libérer la parole :** Décrire des symptômes de manière anonyme et sans jugement.
-* **Comprendre :** Recevoir des informations pédagogiques sur le fonctionnement du corps.
-* **S'orienter :** Savoir quand une consultation est nécessaire et quel spécialiste solliciter.
+* **Libérer la parole :** Une interface anonyme pour décrire des symptômes sans jugement.
+* **Pédagogie active :** Expliquer les mécanismes hormonaux et gynécologiques simplement.
+* **Orientation ciblée :** Identifier le degré d'urgence et le spécialiste approprié (gynécologue, sage-femme, endocrinologue).
+* **Inclusivité linguistique :** Support complet et switch instantané entre le **Français**, l'**Anglais** et l'**Allemand**.
 
 ---
 
-## 🛠 Architecture Technique
+## 🛠 Architecture & Tech Stack
 
-Le projet repose sur une stack moderne privilégiant la performance et la légèreté :
+L'intelligence d'ORIA repose sur un système de **double filtrage** : un premier modèle classifie l'intention et la langue, tandis qu'un second génère la réponse spécialisée.
 
-| Composant | Technologie | Hébergement |
+| Composant | Technologie | Rôle |
 | --- | --- | --- |
-| **Frontend** | HTML5, CSS3 (Modern UI), JavaScript | **Vercel** |
-| **Backend** | Python, FastAPI | **Railway** |
-| **Intelligence** | Mistral AI (via API) | - |
-| **Sécurité** | Privacy by Design (0 stockage) | - |
+| **Frontend** | HTML5 / CSS3 / JS | Interface utilisateur ultra-légère & responsive. |
+| **Backend** | Python / FastAPI | Gestion des sessions, logique de triage et API. |
+| **LLM** | Mistral-Small-Latest | Intelligence conversationnelle haute performance. |
+| **Mémoire** | In-Memory Session | Conservation du contexte sur 10 messages (30 min). |
 
 ---
 
-## 🩺 Périmètre & Garde-fous
+## 🩺 Périmètre & Sécurité
 
-### 🎯 Sujets couverts
+### Sujets couverts
 
-Le chatbot est spécialisé dans la santé hormonale et gynécologique :
-
-* **Cycles :** Règles douloureuses, irrégularités, syndrome prémenstruel (SPM).
-* **Pathologies :** Endométriose, SOPK, infections (urinaires/vaginales), IST.
+* **Cycle & Hormones :** SPM, endométriose, SOPK, irrégularités.
+* **Santé Urogénitale :** Cystites (douleurs urinaires), mycoses, IST.
 * **Vie reproductive :** Contraception, grossesse, post-partum, ménopause.
 
-### 🛡 Sécurité Médicale (Safety First)
+### 🛡 Garde-fous (Safety First)
 
-ORIA intègre des règles strictes de "Triage" :
-
-1. **Zéro Diagnostic :** L'assistant suggère des hypothèses mais ne pose jamais de diagnostic définitif.
-2. **Zéro Prescription :** Aucune recommandation de médicament ou de posologie.
-3. **Filtrage Hors-Sujet :** Toute question non liée à la santé féminine est redirigée vers le périmètre de compétence de l'IA.
+* **Zéro Diagnostic :** Utilisation systématique du conditionnel.
+* **Zéro Prescription :** Aucune mention de médicaments ou dosages.
+* **Triage Dynamique :** Filtrage des sujets hors-santé pour garantir la pertinence.
 
 ---
 
-## 🚨 Protocoles d'Urgence Internationaux
+## 🚨 Protocoles d'Urgence
 
-En cas de détection de symptômes critiques (douleur aiguë, hémorragie, détresse respiratoire), ORIA affiche immédiatement les numéros de secours selon la zone géographique :
+En cas de détection de signaux critiques (douleurs aiguës, hémorragies), ORIA affiche les numéros de secours locaux :
 
-* **🇫🇷 France :** Appelez le **15** ou le **112**.
-* **🇨🇭 Suisse :** Appelez le **144** ou le **112**.
-* **🇩🇪 Allemagne :** Appelez le **112**.
+* **🇫🇷 France :** 15 ou 112
+* **🇨🇭 Suisse :** 144 ou 112
+* **🇩🇪 Allemagne :** 112
+
+---
+
+## Installation Locale
+
+Si vous souhaitez faire tourner le projet sur votre machine :
+
+1. **Cloner le projet**
+```bash
+git clone https://github.com/votre-user/oria-backend.git
+cd oria-backend
+
+```
+
+
+2. **Installer les dépendances**
+```bash
+pip install -r requirements.txt
+
+```
+
+
+3. **Configurer les variables d'environnement**
+Créer un fichier `.env` :
+```env
+MISTRAL_API_KEY=votre_cle_ici
+MISTRAL_MODEL=mistral-small-latest
+
+```
+
+
+4. **Lancer le serveur**
+```bash
+python main.py
+
+```
+
+
 
 ---
 
 ## 🔒 Confidentialité & Éthique
 
-Conformément aux enjeux de santé, ORIA respecte la vie privée :
-
-* **Anonymat total :** Aucune donnée personnelle (nom, email) n'est demandée.
-* **Pas de logs :** Les conversations ne sont ni stockées, ni utilisées pour l'entraînement de modèles tiers.
-* **Transparence :** L'utilisatrice est informée dès le début qu'elle discute avec une IA.
+* **Privacy by Design :** Aucune donnée personnelle n'est collectée.
+* **Éphémérité :** Les conversations sont stockées en RAM et supprimées après 30 minutes d'inactivité.
+* **Éthique :** ORIA est une IA, elle ne remplace pas le lien humain mais le prépare.
 
 ---
 
-## 👥 Équipe & Contact
+## 👥 Équipe
 
-Projet réalisé avec passion par **Ikram** et **Evan**.
+Projet réalisé avec passion par **Ikram** et **Evan** au sein du **RedDrop Lab**.
 
-
-> **Avertissement Légal :** ORIA fournit des informations à but pédagogique uniquement. En cas de doute, consultez toujours un professionnel de santé ou contactez les services d'urgence.
+> **Avertissement Légal :** ORIA fournit des informations à but pédagogique uniquement. En cas de doute, consultez toujours un professionnel de santé.

@@ -34,9 +34,8 @@
     }
 
     *{ box-sizing: border-box; }
-    html,body{ height:100%; }
+    html,body{ height:100%; margin:0; }
     body{
-      margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
       background: var(--bg);
@@ -63,7 +62,7 @@
       100%{ transform: translate3d(-18px, 12px, 0) scale(1.02); }
     }
 
-    a{ color: inherit; text-decoration: none; }
+    a{ color: inherit; text-decoration: none; cursor: pointer; }
 
     .wrap{
       width: min(1180px, calc(100% - 28px));
@@ -94,7 +93,6 @@
       min-width: 220px;
     }
 
-    /* ORIA core (abstract avatar) */
     .core{
       width: 44px;
       height: 44px;
@@ -124,403 +122,110 @@
       50%{ transform: scale(1.08); opacity:1; }
     }
 
-    .brandTitle{
-      display:flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .brandTitle h1{
-      margin:0;
-      font-size: 14px;
-      font-weight: 900;
-      letter-spacing: .2px;
-      line-height:1.1;
-    }
-    .brandTitle p{
-      margin:0;
-      font-size: 12px;
-      color: var(--muted2);
-      line-height:1.2;
-    }
+    .brandTitle h1{ margin:0; font-size: 14px; font-weight: 900; letter-spacing: .2px; }
+    .brandTitle p{ margin:0; font-size: 12px; color: var(--muted2); }
 
-    .navlinks{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      justify-content:center;
-      flex: 1;
-    }
+    .navlinks{ display:flex; align-items:center; gap: 10px; flex: 1; justify-content:center; }
     .navlinks a{
       font-size: 13px;
       color: rgba(255,255,255,.76);
       padding: 10px 12px;
       border-radius: 999px;
+      transition: background 0.2s;
     }
-    .navlinks a:hover{
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-    }
+    .navlinks a:hover{ background: rgba(255,255,255,.06); color: #fff; }
 
-    .cta{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      justify-content:flex-end;
-      min-width: 220px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.85);
-      font-size: 13px;
-      backdrop-filter: blur(14px);
-    }
+    .cta{ display:flex; align-items:center; gap: 10px; justify-content:flex-end; min-width: 220px; }
+    .pill{ padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.05); font-size: 13px; }
 
     .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-      padding: 11px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-      transition: transform .06s ease, background .2s ease, border-color .2s ease;
-      user-select: none;
+      display:inline-flex; align-items:center; justify-content:center; padding: 11px 16px;
+      border-radius: 999px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06);
+      color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.2s;
     }
-    .btn:hover{
-      background: rgba(255,255,255,.09);
-      border-color: rgba(255,255,255,.14);
-    }
-    .btn:active{ transform: translateY(1px); }
-
-    .btn-primary{
-      background: linear-gradient(135deg, var(--pink), #ff1d6d);
-      border-color: rgba(255,255,255,.12);
-      box-shadow: 0 18px 40px rgba(255,45,134,.18);
-    }
-    .btn-primary:hover{
-      background: linear-gradient(135deg, #ff4aa0, #ff2d86);
-    }
-
-    main{ padding: 22px 0 54px; }
+    .btn-primary{ background: linear-gradient(135deg, var(--pink), #ff1d6d); border: none; box-shadow: 0 18px 40px rgba(255,45,134,.18); }
+    .btn-primary:hover{ transform: scale(1.02); }
 
     /* Bento grid */
-    .bento{
-      display:grid;
-      grid-template-columns: 1.55fr .9fr;
-      gap: 16px;
-      align-items: start;
-      margin-top: 14px;
-    }
-
-    .card{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      border-radius: var(--r2);
-      box-shadow: var(--shadow2);
-      backdrop-filter: blur(16px);
-      overflow:hidden;
-      position: relative;
-    }
-
+    .bento{ display:grid; grid-template-columns: 1.55fr .9fr; gap: 16px; margin-top: 14px; }
+    .card{ border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.05); border-radius: var(--r2); backdrop-filter: blur(16px); position: relative; overflow: hidden; }
     .cardGlow:before{
-      content:"";
-      position:absolute;
-      inset:-80px -80px auto auto;
-      width: 260px;
-      height: 260px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,45,134,.38), rgba(255,45,134,0) 70%);
-      filter: blur(2px);
-      opacity: .85;
-      pointer-events:none;
+      content:""; position:absolute; inset:-80px -80px auto auto; width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(255,45,134,.3), transparent 70%); filter: blur(2px); pointer-events:none;
     }
-
     .cardPad{ padding: 18px; }
 
-    .heroTitle{
-      font-size: clamp(26px, 3vw, 38px);
-      line-height: 1.05;
-      letter-spacing: -0.6px;
-      font-weight: 950;
-      margin: 12px 0 10px;
-    }
-    .heroSub{
-      margin:0;
-      color: rgba(255,255,255,.74);
-      font-size: 14px;
-      line-height: 1.65;
-      max-width: 64ch;
-    }
+    .heroTitle{ font-size: clamp(26px, 3vw, 38px); line-height: 1.05; font-weight: 950; margin: 12px 0 10px; }
+    .heroSub{ color: var(--muted); font-size: 14px; line-height: 1.65; }
 
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,45,134,.12);
-      border: 1px solid rgba(255,45,134,.25);
-      color: rgba(255,255,255,.92);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .2px;
-    }
+    .miniTitle{ font-size: 13px; font-weight: 900; margin: 0; }
+    .miniText{ margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .divider{ height:1px; background: rgba(255,255,255,.08); margin: 14px 0; }
 
-    /* Right column stack */
-    .stack{ display:flex; flex-direction: column; gap: 16px; }
+    /* Chips */
+    .chips{ display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip{ border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.05); color: #fff; padding: 8px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .chip:hover{ background: rgba(255,255,255,.1); }
 
-    .miniGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
+    /* Chat logic */
+    .chatShell{ min-height: 610px; display:flex; flex-direction: column; }
+    .chatTop{ display:flex; align-items:center; justify-content:space-between; padding: 14px; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); }
+    .chatTopLeft{ display:flex; align-items:center; gap: 10px; }
+    .aiPulse{ width: 12px; height: 12px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 10px var(--pink); animation: breathe 3s infinite; }
+    @keyframes breathe{ 0%,100%{opacity: 0.5; transform: scale(1);} 50%{opacity: 1; transform: scale(1.2);} }
+    .chatBody{ padding: 14px; overflow-y: auto; flex:1; display:flex; flex-direction: column; gap: 12px; }
+    .bubble{ max-width: 85%; padding: 12px; border-radius: 18px; font-size: 13px; line-height: 1.5; border: 1px solid rgba(255,255,255,.1); }
+    .bubble.me{ align-self: flex-end; background: linear-gradient(135deg, rgba(255,45,134,0.2), rgba(179,107,255,0.1)); border-color: rgba(255,45,134,0.3); }
+    .bubble.bot{ align-self: flex-start; background: rgba(255,255,255,0.05); }
+    .chatBottom{ padding: 14px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); }
+    .inputWrap{ display:flex; gap: 10px; }
+    textarea{ flex:1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; padding: 10px; resize: none; outline: none; }
+    .hint{ font-size: 11px; color: var(--muted2); margin-top: 8px; }
 
-    .miniTitle{
-      margin:0;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: .1px;
+    /* MODAL STYLING (THE KEY TO FLUIDITY) */
+    .modal {
+      display: none; 
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      background: rgba(7, 6, 10, 0.7);
+      backdrop-filter: blur(15px);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-    .miniText{
-      margin: 8px 0 0;
-      color: rgba(255,255,255,.70);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.08);
-      margin: 14px 0;
-    }
-
-    /* Quick topic chips */
-    .chips{
-      display:flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .chip{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.86);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      cursor: pointer;
-      user-select: none;
-      transition: background .2s ease, border-color .2s ease, transform .06s ease;
-      backdrop-filter: blur(14px);
-    }
-    .chip:hover{
-      background: rgba(255,255,255,.08);
-      border-color: rgba(255,255,255,.14);
-    }
-    .chip:active{ transform: translateY(1px); }
-
-    /* Chat */
-    .chatShell{
-      min-height: 610px;
-      display:flex;
-      flex-direction: column;
-    }
-
-    .chatTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 14px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    }
-
-    .chatTopLeft{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
-
-    .aiPulse{
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.12);
+    .modal.active { display: flex; opacity: 1; }
+    .modal-content {
+      background: #0f0c18;
+      border: 1px solid var(--stroke);
+      border-radius: var(--r2);
+      width: min(600px, 92%);
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 40px 30px;
       position: relative;
-      overflow:hidden;
+      transform: translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.8);
     }
-    .aiPulse:before{
-      content:"";
-      position:absolute;
-      inset:-12px;
-      background: radial-gradient(circle, rgba(255,45,134,.55), rgba(179,107,255,.18), transparent 65%);
-      filter: blur(6px);
-      opacity:.85;
-      animation: breathe 4.2s ease-in-out infinite;
+    .modal.active .modal-content { transform: translateY(0); }
+    .close-modal {
+      position: absolute; top: 20px; right: 20px; cursor: pointer;
+      font-size: 24px; color: var(--muted2); transition: 0.2s;
     }
-    @keyframes breathe{
-      0%,100%{ transform: scale(1); opacity:.75; }
-      50%{ transform: scale(1.35); opacity:1; }
-    }
+    .close-modal:hover { color: #fff; transform: rotate(90deg); }
 
-    .chatTopTitle{
-      display:flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .chatTopTitle strong{
-      font-size: 13px;
-      font-weight: 950;
-    }
-    .chatTopTitle span{
-      font-size: 12px;
-      color: rgba(255,255,255,.66);
-    }
+    /* Loading dots */
+    .loadingDots{ display:flex; gap: 4px; }
+    .dot{ width: 5px; height: 5px; background: #fff; border-radius: 50%; animation: bounce 1.4s infinite; }
+    .dot:nth-child(2){ animation-delay: 0.2s; }
+    .dot:nth-child(3){ animation-delay: 0.4s; }
+    @keyframes bounce{ 0%, 100%{ transform: translateY(0); } 50%{ transform: translateY(-5px); } }
 
-    .tools{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      font-size: 12px;
-      color: rgba(255,255,255,.85);
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.80);
-    }
-
-    .chatBody{
-      padding: 14px 14px 0;
-      overflow:auto;
-      flex:1;
-    }
-
-    .bubbleRow{
-      display:flex;
-      margin: 10px 0;
-      gap: 10px;
-    }
-    .bubbleRow.me{ justify-content:flex-end; }
-    .bubbleRow.bot{ justify-content:flex-start; }
-
-    .bubble{
-      max-width: 78%;
-      border-radius: 18px;
-      padding: 12px 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.92);
-      line-height: 1.55;
-      font-size: 13px;
-      white-space: pre-wrap;
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-    }
-
-    .bubble.me{
-      background: linear-gradient(135deg, rgba(255,45,134,.26), rgba(179,107,255,.12));
-      border-color: rgba(255,45,134,.22);
-    }
-
-    .meta{
-      margin-top: 6px;
-      font-size: 11px;
-      color: rgba(255,255,255,.55);
-    }
-
-    .chatBottom{
-      padding: 12px 12px 14px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      background: rgba(7,6,10,.35);
-      backdrop-filter: blur(12px);
-    }
-
-    .inputWrap{
-      display:flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
-    textarea{
-      width: 100%;
-      min-height: 48px;
-      max-height: 150px;
-      resize:none;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.92);
-      outline: none;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-    textarea::placeholder{ color: rgba(255,255,255,.50); }
-
-    .hint{
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      margin-top: 10px;
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-    .hint strong{
-      color: rgba(255,255,255,.88);
-      font-weight: 900;
-    }
-
-    /* Typing dots */
-    .loadingDots{ display:inline-flex; gap: 6px; align-items:center; }
-    .dot{
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.65);
-      animation: bounce 1.1s infinite ease-in-out;
-    }
-    .dot:nth-child(2){ animation-delay: .14s; opacity:.8; }
-    .dot:nth-child(3){ animation-delay: .28s; opacity:.6; }
-    @keyframes bounce{
-      0%,80%,100%{ transform: translateY(0); }
-      40%{ transform: translateY(-5px); }
-    }
-
-    /* Mobile */
     @media (max-width: 980px){
       .navlinks{ display:none; }
-      .brand, .cta{ min-width:auto; }
       .bento{ grid-template-columns: 1fr; }
-      .chatShell{ min-height: 560px; }
     }
   </style>
 </head>
@@ -535,19 +240,19 @@
           <div class="core" aria-hidden="true"></div>
           <div class="brandTitle">
             <h1>ORIA</h1>
-            <p>Assistant d’information en santé féminine</p>
+            <p>Assistant santé féminine</p>
           </div>
         </div>
 
         <nav class="navlinks" aria-label="Navigation">
-          <a href="#chat">Chat</a>
-          <a href="#guides">Guides</a>
-          <a href="#aide">Aide</a>
+          <a onclick="closeAllModals()">Chat</a>
+          <a onclick="openModal('modal-guides')">Guides</a>
+          <a onclick="openModal('modal-aide')">Aide</a>
         </nav>
 
         <div class="cta">
-          <span class="pill" id="localTimePill">Heure locale</span>
-          <button class="btn btn-primary" id="btnFocus">Ouvrir le chat</button>
+          <span class="pill" id="localTimePill">--:--</span>
+          <button class="btn btn-primary" id="btnFocus">Parler</button>
         </div>
       </div>
     </div>
@@ -556,111 +261,45 @@
   <main>
     <div class="wrap">
       <section class="bento">
-        <!-- Left: Chat -->
-        <section class="card chatShell" id="chat" aria-label="Chat ORIA">
+        <section class="card chatShell" id="chat">
           <div class="chatTop">
             <div class="chatTopLeft">
-              <span class="aiPulse" aria-hidden="true"></span>
+              <span class="aiPulse"></span>
               <div class="chatTopTitle">
                 <strong>ORIA</strong>
-                <span id="statusText">Je t’écoute, prends ton temps.</span>
+                <span id="statusText" style="font-size: 11px; opacity: 0.7;">En ligne</span>
               </div>
             </div>
-
-            <div class="tools">
-              <button class="btn" id="btnClear" type="button">Effacer</button>
-            
-            </div>
+            <button class="btn" id="btnClear" style="padding: 6px 12px; font-size: 11px;">Effacer</button>
           </div>
 
-          <div class="chatBody" id="chatBody" role="log" aria-live="polite"></div>
+          <div class="chatBody" id="chatBody"></div>
 
-          <div class="chatBottom" id="aide">
+          <div class="chatBottom">
             <div class="inputWrap">
-              <textarea id="message" placeholder="Décris ton symptôme" rows="2"></textarea>
-              <button class="btn btn-primary" id="send" type="button">Envoyer</button>
+              <textarea id="message" placeholder="Posez votre question ici..." rows="1"></textarea>
+              <button class="btn btn-primary" id="send">Envoyer</button>
             </div>
-
-            <div class="hint">
-              <div>
-                <strong>Santé féminine uniquement.</strong>
-                Pas de diagnostic.
-                Ne mets pas de nom, adresse, ni information personnelle.
-              </div>
-              <div id="latency"></div>
-            </div>
+            <div class="hint"><strong>ORIA :</strong> Informations générales uniquement. Pas de diagnostic.</div>
+            <div id="latency" style="font-size: 9px; opacity: 0.4; margin-top: 4px;"></div>
           </div>
         </section>
 
-        <!-- Right: Cards stack -->
-        <aside class="stack" id="guides" aria-label="Guides ORIA">
-          <!-- Safety / Emergency -->
-    <section class="card cardGlow">
-      <div class="cardPad">
-    
-        <h2 class="heroTitle">Comprendre votre corps, simplement.</h2>
-
-        <p class="heroSub">
-          ORIA vous accompagne pour décrypter vos cycles et votre santé hormonale.
-          Posez vos questions, explorez vos symptômes et obtenez une première orientation adaptée à votre situation.
-        </p>
-
-        <div class="divider"></div>
-
-        <div class="miniGrid">
-          <div>
-            <h3 class="miniTitle">Nos sujets de discussion</h3>
-            <p class="miniText">
-              Cycles et hormones : règles, douleurs, SPM, contraception.<br>
-              Intimité : infections, inconforts pelviens ou vaginaux.<br>
-              Maternité : grossesse, parcours post partum.
-            </p>
-          </div>
-
-          <div>
-            <h3 class="miniTitle">Périmètre</h3>
-            <p class="miniText">
-              Information générale en santé féminine. ORIA aide à décrire les symptômes
-              et à orienter, mais ne remplace pas un professionnel de santé.
-            </p>
-          </div>
-
-          <div style="grid-column: 1 / -1;">
+        <aside class="stack">
+          <section class="card cardGlow cardPad">
+            <h2 class="heroTitle">Écoutez votre corps.</h2>
+            <p class="heroSub">ORIA vous aide à décrypter vos cycles et symptômes hormonaux en toute sécurité.</p>
+            <div class="divider"></div>
             <h3 class="miniTitle">Urgences</h3>
-            <p class="miniText">
-              En cas de symptômes graves (douleurs aiguës, malaise, détresse respiratoire),
-              contactez immédiatement les secours :<br><br>
-              France : 15 ou 112.<br>
-              Suisse : 144 ou 112.<br>
-              Allemagne : 112.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+            <p class="miniText">Douleur intense ou malaise ?<br>Appelez le <strong>15</strong> ou le <strong>112</strong>.</p>
+          </section>
 
-              <!-- Topics / Quick chips -->
-              <section class="card">
-                <div class="cardPad">
-                  <h3 class="miniTitle">Sujets du moment</h3>
-                  <p class="miniText">Choisis un sujet pour pré-remplir ton message.</p>
-
-                  <div class="chips" id="chips">
-                    <button class="chip" data-text="J’ai un retard de règles, est-ce que c’est normal ?">Retard de règles</button>
-                    <button class="chip" data-text="J’ai des douleurs pelviennes, comment savoir si c’est inquiétant ?">Douleurs pelviennes</button>
-                    <button class="chip" data-text="J’ai des pertes inhabituelles, quelles infos sont utiles à donner ?">Pertes inhabituelles</button>
-                    <button class="chip" data-text="J’ai oublié ma pilule, que dois-je faire selon ma situation ?">Oubli de pilule</button>
-                    <button class="chip" data-text="Je suspecte une infection urinaire, quels signes surveiller ?">Infection urinaire</button>
-                    <button class="chip" data-text="Je pense être enceinte, quels symptômes et quelles étapes ?">Grossesse</button>
-                  </div>
-                </div>
-              </section>
-
-          <!-- Did you know -->
-          <section class="card">
-            <div class="cardPad">
-              <h3 class="miniTitle">Le savais-tu ?</h3>
-              <p class="miniText" id="didYouKnow"></p>
+          <section class="card cardPad">
+            <h3 class="miniTitle">Sujets suggérés</h3>
+            <div class="chips" id="chips">
+              <button class="chip" data-text="J’ai un retard de règles, que faire ?">Retard de règles</button>
+              <button class="chip" data-text="Douleurs pelviennes : quand s'inquiéter ?">Douleurs pelviennes</button>
+              <button class="chip" data-text="J'ai oublié ma pilule hier soir.">Oubli de pilule</button>
             </div>
           </section>
         </aside>
@@ -668,199 +307,118 @@
     </div>
   </main>
 
-  <script>
-    // Important: keep your backend URL as-is
-    const BACKEND_URL = "https://medical-chatbot-production-af8e.up.railway.app";
+  <div id="modal-guides" class="modal" onclick="closeAllModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close-modal" onclick="closeAllModals()">&times;</span>
+      <h2 class="heroTitle" style="font-size: 28px;">Guides d'utilisation</h2>
+      <div class="divider"></div>
+      <h3 class="miniTitle">Parler à l'IA</h3>
+      <p class="miniText">Soyez précise : mentionnez la durée du symptôme et son intensité. ORIA est conçue pour l'orientation, pas pour le diagnostic final.</p>
+      
+      <h3 class="miniTitle" style="margin-top:20px;">Préparer son rendez-vous</h3>
+      <p class="miniText">Vous pouvez utiliser les réponses d'ORIA pour lister vos questions à poser à votre gynécologue ou sage-femme.</p>
+      <br>
+      <button class="btn" onclick="closeAllModals()" style="width: 100%;">J'ai compris</button>
+    </div>
+  </div>
 
+  <div id="modal-aide" class="modal" onclick="closeAllModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close-modal" onclick="closeAllModals()">&times;</span>
+      <h2 class="heroTitle" style="font-size: 28px;">Centre d'aide</h2>
+      <div class="divider"></div>
+      <h3 class="miniTitle">Confidentialité</h3>
+      <p class="miniText">Vos messages sont traités de manière anonyme. Nous ne stockons aucune information permettant de vous identifier personnellement.</p>
+      
+      <h3 class="miniTitle" style="margin-top:20px;">Technique</h3>
+      <p class="miniText">Si l'assistant ne répond pas, vérifiez votre connexion ou réessayez dans quelques minutes. Développé par RedDrop Lab.</p>
+      <br>
+      <button class="btn" onclick="closeAllModals()" style="width: 100%;">Fermer</button>
+    </div>
+  </div>
+
+  <script>
+    const BACKEND_URL = "https://medical-chatbot-production-af8e.up.railway.app";
     const chatBody = document.getElementById("chatBody");
     const inputEl = document.getElementById("message");
     const sendBtn = document.getElementById("send");
     const btnClear = document.getElementById("btnClear");
     const btnFocus = document.getElementById("btnFocus");
-    const latencyEl = document.getElementById("latency");
-    const statusText = document.getElementById("statusText");
     const localTimePill = document.getElementById("localTimePill");
 
+    // MODAL LOGIC
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeAllModals() {
+      document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeAllModals(); });
+
+    // CHAT LOGIC
+    function escapeHtml(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
     
-
-    function escapeHtml(s){
-      return (s || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    function nowTime(){
-      const d = new Date();
-      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    }
-
-    function addBubble(role, text, meta){
-      const row = document.createElement("div");
-      row.className = "bubbleRow " + (role === "me" ? "me" : "bot");
-
-      const bubble = document.createElement("div");
-      bubble.className = "bubble " + (role === "me" ? "me" : "bot");
-      bubble.innerHTML = escapeHtml(text);
-
-      row.appendChild(bubble);
-
-      if(meta){
-        const m = document.createElement("div");
-        m.className = "meta";
-        m.textContent = meta;
-        bubble.appendChild(m);
-      }
-
-      chatBody.appendChild(row);
+    function addBubble(role, text){
+      const b = document.createElement("div");
+      b.className = "bubble " + (role === "me" ? "me" : "bot");
+      b.innerHTML = escapeHtml(text);
+      chatBody.appendChild(b);
       chatBody.scrollTop = chatBody.scrollHeight;
-    }
-
-    function addTyping(){
-      const row = document.createElement("div");
-      row.className = "bubbleRow bot";
-      row.id = "typingRow";
-
-      const bubble = document.createElement("div");
-      bubble.className = "bubble bot";
-      bubble.innerHTML = `
-        <span class="loadingDots" aria-label="Chargement">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        </span>
-      `;
-
-      row.appendChild(bubble);
-      chatBody.appendChild(row);
-      chatBody.scrollTop = chatBody.scrollHeight;
-    }
-
-    function removeTyping(){
-      const row = document.getElementById("typingRow");
-      if(row) row.remove();
-    }
-
-    function setBusy(busy){
-      sendBtn.disabled = busy;
-      inputEl.disabled = busy;
-      statusText.textContent = busy ? "Je réfléchis…" : "Je t’écoute, prends ton temps.";
-      if(busy) latencyEl.textContent = "";
-    }
-
-    function isThanksMessage(text){
-      const t = (text || "").trim().toLowerCase();
-      // robust-ish: covers common thanks without being too strict
-      const patterns = [
-        "merci", "merci!", "merci.", "merci beaucoup", "mercii", "thx", "thanks", "thank you", "ok merci", "d'accord merci"
-      ];
-      if(patterns.includes(t)) return true;
-      return /^merci+\s*!*$/i.test(t) || /^thanks\s*!*$/i.test(t) || /^thank you\s*!*$/i.test(t);
     }
 
     async function send(){
-      const message = inputEl.value.trim();
-      if(!message) return;
-
-      addBubble("me", message, nowTime());
+      const msg = inputEl.value.trim();
+      if(!msg) return;
+      addBubble("me", msg);
       inputEl.value = "";
-      setBusy(true);
+      
+      // Loading
+      const loader = document.createElement("div");
+      loader.className = "bubble bot";
+      loader.innerHTML = '<div class="loadingDots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+      chatBody.appendChild(loader);
+      chatBody.scrollTop = chatBody.scrollHeight;
 
-      // Instant UX for "thanks"
-      if(isThanksMessage(message)){
-        addBubble("bot", "Avec plaisir. Si tu as d’autres questions liées à ta santé féminine, je suis là.", "Répondu à " + nowTime());
-        setBusy(false);
-        inputEl.focus();
-        return;
-      }
-
-      addTyping();
-
-      try{
+      try {
         const res = await fetch(BACKEND_URL + "/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
+          body: JSON.stringify({ message: msg })
         });
-
         const data = await res.json();
-        if(!res.ok){
-          const info = data && data.detail && data.detail.info ? data.detail.info : "Erreur API";
-          throw new Error(info);
-        }
+        loader.remove();
+        addBubble("bot", data.answer || "Désolé, une erreur est survenue.");
+        if(data.latency_ms) document.getElementById("latency").textContent = `Réponse en ${data.latency_ms}ms`;
+      } catch(e) {
+        loader.remove();
+        addBubble("bot", "Erreur de connexion au serveur.");
+      }
+    }
 
-        removeTyping();
-        addBubble("bot", data.answer, "Répondu à " + nowTime());
-        if(typeof data.latency_ms === "number"){
-          latencyEl.textContent = "Latence: " + data.latency_ms + " ms";
-        }
-      }catch(e){
-        removeTyping();
-        addBubble(
-          "bot",
-          "Le service est temporairement indisponible. Réessaie dans quelques instants.",
-          "Si le problème persiste, vérifie le backend Railway"
-        );
-      }finally{
-        setBusy(false);
+    // Handlers
+    sendBtn.addEventListener("click", send);
+    btnClear.addEventListener("click", () => { chatBody.innerHTML = ""; addBubble("bot", "Historique effacé. Comment puis-je vous aider ?"); });
+    btnFocus.addEventListener("click", () => inputEl.focus());
+    inputEl.addEventListener("keydown", (e) => { if(e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }});
+
+    // Chips
+    document.getElementById("chips").addEventListener("click", (e) => {
+      if(e.target.classList.contains("chip")) {
+        inputEl.value = e.target.getAttribute("data-text");
         inputEl.focus();
       }
-    }
-
-    function clearChat(){
-      chatBody.innerHTML = "";
-      latencyEl.textContent = "";
-      addBubble(
-        "bot",
-        "Bonjour, je suis ORIA.\n\nJe peux t’aider à décrire tes symptômes, poser 1 à 3 questions de clarification, puis donner des informations générales à faible risque.\n\nJe ne pose pas de diagnostic et je ne remplace pas un professionnel de santé.\n\nEn cas d’urgence, appelle le 15 ou le 112.\n\nDécris ce que tu ressens, depuis quand, et ce qui t’inquiète.",
-        "Je t’écoute"
-      );
-      inputEl.focus();
-    }
-
-    // Quick chips
-    const chips = document.getElementById("chips");
-    chips.addEventListener("click", (e) => {
-      const btn = e.target.closest(".chip");
-      if(!btn) return;
-      const text = btn.getAttribute("data-text");
-      inputEl.value = text || "";
-      inputEl.focus();
     });
 
-    // Did you know (rotates per refresh)
-    const facts = [
-      "Un cycle menstruel peut varier : une plage de 21 à 35 jours est souvent considérée comme courante.",
-      "Le stress peut retarder l’ovulation et donc provoquer un retard de règles, même sans grossesse.",
-      "Une douleur pelvienne intense, soudaine ou d’un seul côté, surtout avec saignement ou malaise, nécessite une évaluation rapide.",
-      "Les infections urinaires peuvent se manifester par brûlures, envies fréquentes, ou douleurs ; une fièvre peut signaler une atteinte plus haute.",
-      "Les pertes vaginales changent parfois selon le cycle, mais une odeur forte, des démangeaisons ou une douleur justifient un avis médical.",
-      "Après un oubli de pilule, la conduite à tenir dépend du type de pilule et du moment de l’oubli : préciser le contexte aide beaucoup."
-    ];
-    const didYouKnow = document.getElementById("didYouKnow");
-    didYouKnow.textContent = facts[Math.floor(Math.random() * facts.length)];
-
-    // Local time pill (fun wink)
-    function updateLocalTime(){
+    // Clock
+    setInterval(() => {
       const d = new Date();
-      const t = d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-      localTimePill.textContent = "Heure locale : " + t;
-    }
-    updateLocalTime();
-    setInterval(updateLocalTime, 30000);
+      localTimePill.textContent = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }, 1000);
 
-    sendBtn.addEventListener("click", send);
-    btnClear.addEventListener("click", clearChat);
-    btnFocus.addEventListener("click", () => inputEl.focus());
-
-    inputEl.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" && !e.shiftKey){
-        e.preventDefault();
-        if(!sendBtn.disabled) send();
-      }
-    });
-
-    clearChat();
+    // Init
+    addBubble("bot", "Bonjour, je suis ORIA. Je suis là pour répondre à vos questions sur la santé féminine.");
   </script>
 </body>
 </html>
